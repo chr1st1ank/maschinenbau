@@ -14,6 +14,9 @@ inputs:
   target-branch:
     description: 'Branch where the changes should be pushed to.'
     default: maschinenbau-sync
+  github-token:
+    description: "Github Token for pushing the changes"
+    required: true
 outputs: {}
 runs:
   using: "composite"
@@ -66,4 +69,4 @@ runs:
       with:
         force_with_lease: true
         branch: ${{ inputs.target-branch }}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ inputs.github-token }}
