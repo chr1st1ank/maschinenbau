@@ -1,14 +1,6 @@
 - name: Install the blueprint "github-paperwork"
   hosts: all
   tasks:
-    - name: Debug
-      debug:
-        msg: "{{ playbook_dir }}: {{ (playbook_dir, '../../.workdir') | path_join | realpath }}"
-
-    - name: Determine workdir
-      set_fact:
-        workdir: "{{ (playbook_dir, '../../.workdir') | path_join | realpath }}"
-
     - name: Show workdir
       debug:
         msg: "{{ workdir }}"

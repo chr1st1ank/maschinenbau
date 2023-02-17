@@ -1,0 +1,49 @@
+# https://taskfile.dev
+
+version: '3'
+silent: true
+
+vars:
+  GIT_URL: '{{ print "git@github.com:" (env "repo") }}'
+tasks:
+
+  install:
+    desc: Install the development tools
+    cmds:
+      - python -m pip install --upgrade pip pip-tools
+      - python -m piptools sync requirements.lock
+      - ansible-galaxy collection install epfl_si.git
+
+  checkout:
+    desc: |
+      Check out the target repository given by the environment variable "repo".
+      E.g. run `repo=chr1st1ank/dike task checkout`.
+    preconditions:
+      - sh: '{{if env "repo" }} true {{else}} false {{end}}'
+        msg: The environment variable "repo" must be set!
+    cmds:
+      - |
+        echo Check out git@git.dhl.com:$repo
+        git clone --depth 1 --single-branch --quiet {{.GIT_URL}} .workdir || \
+        rm -rf .workdir && git clone --depth 1 --single-branch --quiet {{.GIT_URL}} .workdir
+
+  ghp:
+    cmds:
+      - >
+        ansible-playbook 
+        --connection=local --inventory 127.0.0.1, 
+        --extra-vars="ansible_python_interpreter='$(which python)' git_url={{.GIT_URL}} workdir='$(pwd)/.workdir' license=apache2" 
+        blueprints/github-paperwork/install-playbook.yaml
+
+  #################
+  ## Cleanup tasks
+  #################
+  clean-workdir:
+    desc: Clean up the checked-out repository.
+    cmds:
+      - rm -rfv .workdir
+
+  clean:
+    desc: Run all clean sub-tasks.
+    deps:
+      - clean-workdir
