@@ -26,6 +26,7 @@ runs:
         python-version: 3.9
 
     - name: Install Ansible
+      shell: bash
       run: |
         pip3 install ansible
 
@@ -36,6 +37,7 @@ runs:
         path: .maschinenbau
 
     - name: Run Ansible playbook
+      shell: bash
       run: >
         ansible-playbook
         --connection=local --inventory 127.0.0.1,
@@ -43,6 +45,7 @@ runs:
         .maschinenbau/blueprints/${{ inputs.blueprints }}/install-playbook.yaml
 
     - name: Delete blueprint folder
+      shell: bash
       run: |
         rm -rf .maschinenbau
         find . | grep -v .git
@@ -51,6 +54,7 @@ runs:
       env:
         GIT_COMMITTER_EMAIL: bot@github.com
         GIT_COMMITTER_NAME: "Maschinenbau Bot"
+      shell: bash
       run: |
         git config --global user.email "$GIT_COMMITTER_EMAIL"
         git config --global user.name "$GIT_COMMITTER_NAME"
