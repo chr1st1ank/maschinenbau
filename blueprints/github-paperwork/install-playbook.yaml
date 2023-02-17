@@ -1,0 +1,95 @@
+- name: My first play
+  hosts: all
+#  collections:
+#    - lvrfrc87.git_acp
+#    - epfl_si.git
+#  ansible_python_interpreter: "{{ lookup('ansible.builtin.env', 'HOME') }}"
+  tasks:
+    - name: Debug
+      debug:
+        msg: "{{ playbook_dir }}: {{ (playbook_dir, '../../.workdir') | path_join | realpath }}"
+
+    - name: Determine workdir
+      set_fact:
+        workdir: "{{ (playbook_dir, '../../.workdir') | path_join | realpath }}"
+
+    - name: Show workdir
+      debug:
+        msg: "{{ workdir }}"
+
+    - name: Roll out root folder templates
+      template:
+        src: "{{ item }}"
+        dest: "{{ workdir }}/{{ item | basename }}"
+      with_fileglob:
+        - templates/*
+
+    - name: Remove single ISSUE_TEMPLATE if it exists
+      file:
+        path: "{{ workdir }}/.github/ISSUE_TEMPLATE.md"
+        state: absent
+
+    - name: Create ISSUE_TEMPLATE folder
+      file:
+        path: "{{ workdir }}/.github/ISSUE_TEMPLATE"
+        state: directory
+      register: folder_output
+
+    - name: Roll out ISSUE_TEMPLATEs
+      template:
+        src: "{{ item }}"
+        dest: "{{ workdir }}/.github/ISSUE_TEMPLATE/{{ item | basename }}"
+      with_fileglob:
+        - templates/.github/ISSUE_TEMPLATE/*
+
+    - name: Copy license
+      copy:
+        src: "templates/licenses/{{license}}.txt"
+        dest: "{{ workdir }}/LICENSE"
+      when: license is defined
+
+
+#      register: templates_added
+
+#    - name: "adding changes to local repository"
+#      shell:
+#        cmd: "git add {{ item.path | quote }}"
+#        chdir: "{{ workdir }}"
+#      loop: "{{ templates_added.results }}"
+#      loop_control:
+#        index_var: index
+#      when: templates_added.results[index].changed
+#      register: git_add
+#
+#    - name: "Ausgabe git add"
+#      debug:
+#        msg: "{{ git_add }}"
+#
+#    - name: "Commit changes"
+#      shell:
+#        cmd: "git commit -m '[maschinenbau] Apply template github-paperwork'"
+#        chdir: "{{ workdir }}"
+#      when: git_add.changed
+
+#    - name: LOCAL | push file1 on local repo.
+#      git_acp:
+#        path: "{{ workdir }}"
+#        branch: test
+#        comment: Add file1.
+#        add: [ "{{ item | basename }}" ]
+#        mode: local
+#        url: "{{ workdir }}"
+##        url: "{{ git_url }}"
+#      with_fileglob:
+#        - templates/*
+#
+#    - name: Commit to the current branch (whichever it is) and force-push it to origin/prod
+#      epfl_si.git.git_branch:
+#        repository: '{{ image_serving_build_dir }}'
+#        branch: master
+##        path: "{{ workdir }}"
+#        ensure:
+#          committed:
+#            message: "[maschinenbau] Apply template github-paperwork"
+##          push:
+##            to: 'refs/remotes/origin/prod'
