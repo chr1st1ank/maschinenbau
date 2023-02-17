@@ -1,0 +1,65 @@
+name: Maschinenbau Sync
+description: Sync blueprints using Ansible playbook
+inputs:
+  blueprint-repository:
+    description: 'The name of the repository to fetch blueprints from.'
+    required: true
+    default: chr1st1ank/maschinenbau
+  blueprints:  # TODO: Make list
+    description: 'The names of the blueprints to install.'
+    required: true
+  blueprint-vars:
+    description: 'Extra variables to pass to the blueprint playbooks (space separated).'
+    default: license=apache2
+  target-branch:
+    description: 'Branch where the changes should be pushed to.'
+    default: maschinenbau-sync
+outputs: {}
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - uses: actions/setup-python@v4.3.1
+      with:
+        python-version: 3.9
+
+    - name: Install Ansible
+      run: |
+        pip3 install ansible
+
+    - name: Fetch Blueprints
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ inputs.blueprint-repository }}
+        path: .maschinenbau
+
+    - name: Run Ansible playbook
+      run: >
+        ansible-playbook
+        --connection=local --inventory 127.0.0.1,
+        --extra-vars="${{ inputs.blueprint-vars }} workdir=$(pwd)"
+        .maschinenbau/blueprints/${{ inputs.blueprints }}/install-playbook.yaml
+
+    - name: Delete blueprint folder
+      run: |
+        rm -rf .maschinenbau
+        find . | grep -v .git
+
+    - name: Commit Changes
+      env:
+        GIT_COMMITTER_EMAIL: bot@github.com
+        GIT_COMMITTER_NAME: "Maschinenbau Bot"
+      run: |
+        git config --global user.email "$GIT_COMMITTER_EMAIL"
+        git config --global user.name "$GIT_COMMITTER_NAME"
+        git add -A .
+        git commit -m "[Maschinenbau] Sync templates"
+
+    - name: Push Changes
+      uses: ad-m/github-push-action@master
+      with:
+        force_with_lease: true
+        branch: ${{ inputs.target-branch }}
+        github_token: ${{ secrets.GITHUB_TOKEN }}
