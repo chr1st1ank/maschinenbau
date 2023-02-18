@@ -89,8 +89,8 @@ runs:
 
     - name: Push Changes
       if: ${{ inputs.push == 'true' }}
-      uses: ad-m/github-push-action@master
-      with:
-        force_with_lease: true
-        branch: ${{ inputs.target-branch }}
-        github_token: ${{ inputs.github-token }}
+      env:
+        TARGET_BRANCH: "${{ inputs.target-branch }}"
+      shell: bash
+      run: |
+        git push --set-upstream origin $TARGET_BRANCH
