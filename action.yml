@@ -83,7 +83,7 @@ runs:
         git commit -m "[Maschinenbau] Sync templates"
 
     - name: Push Changes
-      if: inputs.push == "true"
+      if: ${{ inputs.push == 'true' }}
       uses: ad-m/github-push-action@master
       with:
         force_with_lease: true
