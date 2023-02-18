@@ -19,7 +19,7 @@ jobs:
         blueprints: github-paperwork
         target-branch: test
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        push: false
+        push: "false"
 
     - name: Test Changes
       run: |
