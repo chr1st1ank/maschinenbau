@@ -16,7 +16,7 @@ inputs:
     default: maschinenbau-sync
   push:
     description: 'Whether to push the changes.'
-    default: True
+    default: "true"
   github-token:
     description: "Github Token for pushing the changes"
     required: true
@@ -68,7 +68,7 @@ runs:
         git commit -m "[Maschinenbau] Sync templates"
 
     - name: Push Changes
-      if: ${{ inputs.push }}
+      if: ${{ inputs.push | lower == "true" }}
       uses: ad-m/github-push-action@master
       with:
         force_with_lease: true
