@@ -78,10 +78,12 @@ runs:
       env:
         GIT_COMMITTER_EMAIL: bot@github.com
         GIT_COMMITTER_NAME: "Maschinenbau Bot"
+        TARGET_BRANCH: "${{ inputs.target-branch }}"
       shell: bash
       run: |
         git config --global user.email "$GIT_COMMITTER_EMAIL"
         git config --global user.name "$GIT_COMMITTER_NAME"
+        git checkout -b $TARGET_BRANCH
         git add -A .
         git commit -m "[Maschinenbau] Sync templates"
 
