@@ -49,7 +49,7 @@ runs:
     - name: Install Ansible
       shell: bash
       run: |
-        pip3 install ansible
+        pip3 install ansible-core
 
     - name: Fetch Blueprints
       uses: actions/checkout@v3
