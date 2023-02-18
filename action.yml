@@ -31,6 +31,7 @@ runs:
         BLUEPRINT_VARS: ${{ blueprint-vars }}
         TARGET_BRANCH: ${{ target-branch }}
         PUSH: ${{ push }}
+      shell: bash
       run: |
         echo "BLUEPRINT_REPOSITORY = $BLUEPRINT_REPOSITORY"
         echo "BLUEPRINTS = $BLUEPRINTS"
