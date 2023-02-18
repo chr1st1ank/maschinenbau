@@ -5,8 +5,8 @@ inputs:
     description: 'The name of the repository to fetch blueprints from.'
     required: true
     default: chr1st1ank/maschinenbau
-  blueprints:  # TODO: Make list
-    description: 'The names of the blueprints to install.'
+  blueprints:
+    description: 'The names of the blueprints to install (space separated).'
     required: true
   blueprint-vars:
     description: 'Extra variables to pass to the blueprint playbooks (space separated).'
