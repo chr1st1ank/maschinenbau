@@ -35,3 +35,8 @@
         src: "templates/licenses/{{license}}.txt"
         dest: "{{ workdir }}/LICENSE"
       when: license is defined
+
+    - name: Remove other license files
+      file:
+        path: "{{ workdir }}/LICENSE.rst"
+        state: absent
