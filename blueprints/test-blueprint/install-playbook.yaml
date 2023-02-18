@@ -1,0 +1,13 @@
+- name: Install the blueprint "github-paperwork"
+  hosts: all
+  tasks:
+    - name: Show workdir
+      debug:
+        msg: "{{ workdir }}"
+
+    - name: Roll out root folder templates
+      template:
+        src: "{{ item }}"
+        dest: "{{ workdir }}/{{ item | basename }}"
+      with_fileglob:
+        - templates/*

@@ -16,11 +16,12 @@ jobs:
       uses: ./
       with:
         blueprint-repository: chr1st1ank/maschinenbau
-        blueprints: github-paperwork
+        blueprints: test-blueprint test-blueprint2
         target-branch: test
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push: "false"
 
     - name: Test Changes
       run: |
-        # Run your tests here
+        git diff-tree --no-commit-id --name-only -r HEAD
+        test $(git diff-tree --no-commit-id --name-only -r HEAD | grep test-file | wc -l) -eq 2 
