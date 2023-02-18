@@ -1,0 +1,26 @@
+name: Maschinenbau Sync Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  maschinenbau-test-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Run Maschinenbau Sync Action
+      uses: ./
+      with:
+        blueprint-repository: chr1st1ank/maschinenbau
+        blueprints: github-paperwork
+        target-branch: test
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        push: false
+
+    - name: Test Changes
+      run: |
+        # Run your tests here
