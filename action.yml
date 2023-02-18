@@ -60,10 +60,12 @@ runs:
     - name: Run Ansible playbook
       shell: bash
       run: >
-        ansible-playbook
-        --connection=local --inventory 127.0.0.1,
-        --extra-vars="${{ inputs.blueprint-vars }} workdir=$(pwd)"
-        .maschinenbau/blueprints/${{ inputs.blueprints }}/install-playbook.yaml
+        for blueprint in ${{ inputs.blueprints }}; do
+            ansible-playbook
+            --connection=local --inventory 127.0.0.1,
+            --extra-vars="${{ inputs.blueprint-vars }} workdir=$(pwd)"
+            .maschinenbau/blueprints/${blueprint}/install-playbook.yaml
+        done
 
     - name: Delete blueprint folder
       shell: bash
