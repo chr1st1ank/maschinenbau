@@ -1,9 +1,11 @@
 - name: Install the blueprint "github-paperwork"
   hosts: all
   tasks:
-    - name: Show workdir
+    - name: Show Inputs
       debug:
-        msg: "{{ workdir }}"
+        msg: |
+          workdir={{ workdir }}
+          license={{ license }}
 
     - name: Roll out root folder templates
       template:
