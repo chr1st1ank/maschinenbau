@@ -93,4 +93,4 @@ runs:
         TARGET_BRANCH: "${{ inputs.target-branch }}"
       shell: bash
       run: |
-        git push --set-upstream origin $TARGET_BRANCH
+        git push --force_with_lease --set-upstream origin $TARGET_BRANCH
