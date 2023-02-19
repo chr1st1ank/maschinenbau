@@ -2,10 +2,12 @@
   hosts: all
   tasks:
     - name: Show Inputs
-      debug:
+      vars:
         msg: |
-          workdir={{ workdir }}
-          license={{ license }}
+          workdir: {{ workdir }}
+          license: {{ license }}
+      debug:
+        msg: "{{ msg.split('\n') }}"
 
     - name: Roll out root folder templates
       template:
