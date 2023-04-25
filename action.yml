@@ -78,6 +78,15 @@ runs:
         rm -rf .maschinenbau
         find . | grep -v .git
 
+    - name: Git settings
+      env:
+        GIT_COMMITTER_EMAIL: bot@github.com
+        GIT_COMMITTER_NAME: "Maschinenbau Bot"
+      shell: bash
+      run: |
+        git config --global user.email "$GIT_COMMITTER_EMAIL"
+        git config --global user.name "$GIT_COMMITTER_NAME"
+
 #    - name: Commit Changes
 #      env:
 #        GIT_COMMITTER_EMAIL: bot@github.com
