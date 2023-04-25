@@ -18,7 +18,6 @@ jobs:
       with:
         blueprint-repository: chr1st1ank/maschinenbau
         blueprints: test-blueprint test-blueprint2
-        target-branch: test
         github-token: ${{ secrets.GITHUB_TOKEN }}
         push: "false"
 
