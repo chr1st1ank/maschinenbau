@@ -16,7 +16,7 @@ inputs:
     default: maschinenbau-sync
   base-branch:
     description: 'Branch where the changes should be pushed to.'
-    default: maschinenbau-sync
+    default: main
   push:
     description: 'Whether to push the changes.'
     default: "true"
