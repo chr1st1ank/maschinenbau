@@ -106,7 +106,7 @@ runs:
       if: ${{ inputs.push == 'true' }}
       uses: peter-evans/create-pull-request@v5
       with:
-        token: "{{ inputs.github-token }}"
+        token: "${{ inputs.github-token }}"
         commit-message: "[Maschinenbau] Sync templates"
         committer: "Maschinenbau Bot <bot@github.com>"
         branch: "${{ inputs.pull-request-branch }}"
