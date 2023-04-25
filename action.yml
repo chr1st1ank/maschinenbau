@@ -50,6 +50,7 @@ runs:
       shell: bash
       run: |
         pip3 install ansible-core
+        ansible-galaxy collection install community.general
 
     - name: Fetch Blueprints
       uses: actions/checkout@v3
