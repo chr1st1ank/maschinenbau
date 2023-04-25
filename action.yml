@@ -81,6 +81,20 @@ runs:
         rm -rf .maschinenbau
         find . | grep -v .git
 
+    - name: Commit Changes
+      if: ${{ inputs.push != 'true' }}
+      env:
+        GIT_COMMITTER_EMAIL: bot@github.com
+        GIT_COMMITTER_NAME: "Maschinenbau Bot"
+        TARGET_BRANCH: "${{ inputs.pull-request-branch }}"
+      shell: bash
+      run: |
+        git config --global user.email "$GIT_COMMITTER_EMAIL"
+        git config --global user.name "$GIT_COMMITTER_NAME"
+        git checkout -b $TARGET_BRANCH
+        git add -A .
+        git commit -m "[Maschinenbau] Sync templates"
+
     - name: Create Pull Request
       if: ${{ inputs.push == 'true' }}
       uses: peter-evans/create-pull-request@v5
