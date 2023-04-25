@@ -44,3 +44,20 @@
       file:
         path: "{{ workdir }}/LICENSE.rst"
         state: absent
+
+    - name: Add license to pyproject.toml
+      block:
+        - name: Check if pyproject.toml file exists
+          stat:
+            path: "{{ workdir }}/pyproject.toml"
+          register: pyproject_toml_file
+
+        - name: Add license line to pyproject.toml
+          ini_file:
+            path: "{{ workdir }}/pyproject.toml"
+            section: project
+            option: license
+            value: '{file = "LICENSE"}'
+          when: pyproject_toml_file.stat.exists
+
+      when: license is defined
