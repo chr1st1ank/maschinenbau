@@ -1,0 +1,15 @@
+- name: Install the blueprint "precommit"
+  hosts: all
+  tasks:
+    - name: Show Inputs
+      vars:
+        msg: |
+          workdir: {{ workdir }}
+      debug:
+        msg: "{{ msg.split('\n') }}"
+    - name: Roll out root folder templates
+      template:
+        src: "{{ item }}"
+        dest: "{{ workdir }}/{{ item | basename }}"
+      with_fileglob:
+        - templates/*

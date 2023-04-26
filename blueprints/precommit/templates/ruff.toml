@@ -1,0 +1,39 @@
+line-length = 100
+extend-exclude = ["*.ipynb", "**/*_pb2.py", "**/*_pb2.pyi"]
+select = [
+#    "ANN",  # flake8-annotations
+    "A",  # flake8-builtins
+    "B",
+    "B9",
+    "BLE",  # flake8-blind-except
+    "C",
+    "C4",  # flake8-comprehensions
+    "C90",  # MCCabe
+    "D",  # Pydocstyle
+    "DTZ",  # flake8-datetimez
+    "E",  # Pycodestyle error
+    "F",  # Pyflakes
+    "G",  # flake8-logging-format
+    "I",  # Isort
+    "N",  # pep8-naming
+    "PD",  # pandas-vet
+    "PL",  # Pylint
+    "PT",  # flake8-pytest-style
+    "PYI",  # flake8-pyi
+    "RUF",  # Ruff
+    "S",  # flake8-bandit
+    "TCH",  #  flake8-type-checking
+    "W",  # Pycodestyle warning
+]
+ignore = ["C408", "PLR0913", "S608"]
+
+[mccabe]
+max-complexity = 18
+
+[pydocstyle]
+convention = "google"
+
+[per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/*" = ["ANN", "D", "S101", "PT", "PLR", "PD901", "RUF001"]
+"integration_tests/*" = ["ANN", "D", "S101", "PT", "PLR", "PD901", "RUF001"]
