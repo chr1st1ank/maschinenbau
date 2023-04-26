@@ -52,10 +52,16 @@
             path: "{{ workdir }}/pyproject.toml"
           register: pyproject_toml_file
 
+        - name: Set project section variable
+          shell: grep -q 'tool.poetry' "{{ workdir }}/pyproject.toml" && echo "tool.poetry" || echo "project"
+          register: project_section
+          changed_when: false
+          when: pyproject_toml_file.stat.exists
+
         - name: Add license line to pyproject.toml
           ini_file:
             path: "{{ workdir }}/pyproject.toml"
-            section: project
+            section: "{{ project_section.stdout }}"
             option: license
             value: '{file = "LICENSE"}'
           when: pyproject_toml_file.stat.exists
