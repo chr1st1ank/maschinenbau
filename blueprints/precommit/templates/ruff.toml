@@ -25,7 +25,7 @@ select = [
     "TCH",  #  flake8-type-checking
     "W",  # Pycodestyle warning
 ]
-ignore = ["C408", "PLR0913", "S608"]
+ignore = ["C408", "PLR0913", "S608", "PYI021"]
 
 [mccabe]
 max-complexity = 18
